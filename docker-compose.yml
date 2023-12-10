@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: travel-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - travel-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: travel-node-api
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/travelDb
+      - PORT=5000
+      - JWT_SECRET=supersecretjwtkey123
+      - PYTHON_SERVICE_URL=http://ai-service:8000
+    depends_on:
+      - mongodb
+    networks:
+      - travel-network
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: travel-python-ai
+    ports:
+      - "8000:8000"
+    networks:
+      - travel-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: travel-react-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+    networks:
+      - travel-network
+
+volumes:
+  mongo_data:
+
+networks:
+  travel-network:
+    driver: bridge

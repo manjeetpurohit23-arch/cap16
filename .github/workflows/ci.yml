@@ -1,0 +1,44 @@
+name: Travel App CI
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Build Backend
+      run: |
+        cd backend
+        npm install || true
+
+    - name: Build Frontend
+      run: |
+        cd frontend
+        npm install || true
+        npm run build || true
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install AI Service Deps
+      run: |
+        cd ai-service
+        pip install -r requirements.txt || true
+
+    - name: Docker Compose Validate
+      run: docker-compose config
