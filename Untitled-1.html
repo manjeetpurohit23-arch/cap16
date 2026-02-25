@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fun Button Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+            margin-top: 100px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚠️ Don't Click The Button ⚠️</h1>
+    <button onclick="runAway()" id="btn">Click Me</button>
+
+    <script>
+        function runAway() {
+            let btn = document.getElementById("btn");
+            let x = Math.random() * window.innerWidth - 100;
+            let y = Math.random() * window.innerHeight - 50;
+            btn.style.position = "absolute";
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+        }
+    </script>
+
+</body>
+</html>
