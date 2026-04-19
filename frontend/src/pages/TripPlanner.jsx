@@ -104,6 +104,8 @@ const TripPlanner = () => {
 
 // Component to Display the generated result
 const TripResult = ({ trip, onReset }) => {
+    const [activeLocation, setActiveLocation] = useState(trip.destination);
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-7xl mx-auto px-6 py-8">
             <button onClick={onReset} className="text-gray-400 hover:text-white mb-6 flex items-center">
@@ -130,11 +132,41 @@ const TripResult = ({ trip, onReset }) => {
                         </div>
                     </div>
 
-                    {/* Mock Google Map / Charts placeholder (Can use recharts here if data structure is deep) */}
-                    <div className="glass-panel p-6 rounded-3xl h-64 bg-gray-800 flex items-center justify-center text-gray-500 flex-col">
-                        <MapPin className="w-10 h-10 mb-2 opacity-50" />
-                        Interactive Map Integration
+                    {/* Interactive Google Map using iframe */}
+                    <div className="glass-panel p-2 rounded-3xl overflow-hidden h-64 bg-gray-800 shadow-lg">
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            frameBorder="0" 
+                            style={{ border: 0, borderRadius: '1.2rem', transition: 'all 0.3s ease' }}
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(activeLocation)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                            allowFullScreen
+                            title="Interactive Map"
+                        ></iframe>
                     </div>
+
+                    {/* Where to Stay (Hotels) */}
+                    {trip.hotels && trip.hotels.length > 0 && (
+                        <div className="glass-panel p-6 rounded-3xl mt-6">
+                            <h3 className="text-xl font-bold mb-4 flex items-center"><MapPin className="mr-2 text-brand-secondary" /> Where to Stay</h3>
+                            <div className="space-y-4">
+                                {trip.hotels.map((hotel, idx) => (
+                                    <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h4 className="font-bold text-lg leading-tight">{hotel.name}</h4>
+                                            <span className="bg-brand-primary text-white text-xs px-2 py-1 rounded-full font-bold ml-2 shrink-0">⭐ {hotel.rating}</span>
+                                        </div>
+                                        <p className="text-brand-accent font-bold text-md mb-2">{hotel.pricePerNight} <span className="text-gray-400 text-sm font-normal">/ night</span></p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {hotel.amenities.map((amenity, i) => (
+                                                <span key={i} className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded">{amenity}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Right side: Day by day breakdown */}
@@ -146,10 +178,21 @@ const TripResult = ({ trip, onReset }) => {
                             <p className="text-gray-400 text-sm mb-4">{dayPlan.theme}</p>
                             <div className="space-y-4">
                                 {dayPlan.schedule.map((item, idxx) => (
-                                    <div key={idxx} className="flex border-t border-white/5 pt-4">
+                                    <div 
+                                        key={idxx} 
+                                        onClick={() => {
+                                            if (item.placeName) {
+                                                setActiveLocation(`${item.placeName}, ${trip.destination}`);
+                                            }
+                                        }}
+                                        className={`flex border-t border-white/5 pt-4 transition-all duration-300 ${item.placeName ? 'cursor-pointer hover:bg-white/5 hover:pl-2 rounded-r-lg' : ''}`}
+                                    >
                                         <div className="w-24 text-sm text-brand-secondary font-bold flex-shrink-0">{item.time}</div>
                                         <div>
-                                            <p className="font-medium">{item.activity}</p>
+                                            <p className="font-medium text-lg text-white">
+                                                {item.placeName && <span className="font-bold text-brand-primary">{item.placeName}: </span>}
+                                                {item.activity}
+                                            </p>
                                             <span className="text-xs bg-white/10 px-2 py-1 rounded text-gray-300 mt-2 inline-block">{item.type}</span>
                                         </div>
                                     </div>

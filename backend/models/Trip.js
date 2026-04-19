@@ -28,6 +28,10 @@ const tripSchema = new mongoose.Schema({
         type: Object, // Stores JSON coming back from AI
         required: true
     },
+    hotels: {
+        type: Array, // Stores list of recommended hotels
+        default: []
+    },
     imageUrl: {
         type: String
     },

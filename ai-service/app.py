@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
-from recommendation import generate_itinerary
+from recommendation import generate_itinerary, generate_hotels
 from budget_optimizer import optimize_budget
 
 app = FastAPI(title="Travel AI Microservice")
@@ -41,6 +41,7 @@ def get_recommendation(request: TripRequest):
                 "budget_tier": request.budget,
                 "total_estimated_cost": estimated_cost,
                 "budget_breakdown": breakdown,
+                "hotels": generate_hotels(request.destination, request.budget),
                 "backdrop_image": f"https://source.unsplash.com/1600x900/?{request.destination.replace(' ', ',')}"
             },
             "itinerary": itinerary

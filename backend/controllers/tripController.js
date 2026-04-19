@@ -31,6 +31,7 @@ exports.generateTrip = async (req, res) => {
             days,
             budget,
             estimatedCost,
+            hotels: itineraryData.metadata.hotels || [],
             itineraryData: itineraryData.itinerary,
             imageUrl: itineraryData.metadata.backdrop_image || ''
         });
