@@ -9,7 +9,7 @@ An intelligent, full-stack travel planning platform utilizing Generative AI to c
 - **Nancy Nandal** – Project Manager (Scrum, Architecture & Docs)
 - **Manjeet Purohit** – AI/ML Engineer (Python, Data Pipeline, Recommendations)
 - **Nikhil** – Backend Developer (Node.js, Express, MongoDB, Auth)
-- **Deepesh Yadav** – DevOps Engineer (Docker, CI/CD Jenkins, GitHub Actions)
+- **Deepesh Yadav** – DevOps Engineer (Docker, CI/CD Jenkins, GitHub Actions) 
 - **Khushi Balyan** – Frontend Developer (React, Tailwind, Recharts, Framer Motion)
 
 ## 🚀 Tech Stack
