@@ -70,7 +70,7 @@ const Dashboard = () => {
                                     <div className="w-full h-full flex items-center justify-center bg-brand-dark/50"><MapPin className="text-brand-primary w-12 h-12" /></div>
                                 )}
                                 <div className="absolute top-4 right-4 bg-black/60 backdrop-blur px-3 py-1 rounded-full text-xs font-bold">
-                                    {trip.days} Days
+                                    {trip.duration} Days
                                 </div>
                             </div>
                             
@@ -78,7 +78,7 @@ const Dashboard = () => {
                                 <h3 className="text-2xl font-bold mb-2">{trip.destination}</h3>
                                 <div className="flex items-center text-gray-400 text-sm mb-4">
                                     <DollarSign className="w-4 h-4 mr-1" />
-                                    {trip.budget} Budget • Est. ${trip.estimatedCost}
+                                    {trip.budgetTier} Budget • Est. ${trip?.budget?.total ?? 0}
                                 </div>
                                 <div className="mt-auto flex justify-between items-center pt-4 border-t border-white/10">
                                     <span className="text-brand-primary text-sm font-medium hover:underline cursor-pointer">View PDF</span>
